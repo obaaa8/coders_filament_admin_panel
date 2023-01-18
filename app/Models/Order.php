@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Shift extends Model
+class Order extends Model
 {
 
     /**
@@ -13,11 +13,11 @@ class Shift extends Model
      * @var string[]
      */
     protected $fillable = [
-        'start_at',
-        'end_at',
+        'customer_id',
+        'shift_id',
         'total_amount',
-        'employee_id',
-        'status'
+        'created_by',
+        'paid'
     ];
 
     /**
@@ -25,7 +25,7 @@ class Shift extends Model
      *
      * @var string
      */
-    protected $table = 'shifts';
+    protected $table = 'orders';
 
     /**
      * The attributes that aren't mass assignable.
@@ -41,8 +41,18 @@ class Shift extends Model
      */
     public $timestamps = true;
 
-    public function user()
+    public function createdby()
     {
-        return $this->belongsTo(User::class, 'employee_id', 'id');
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id', 'id');
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class, 'shift_id', 'id');
     }
 }
